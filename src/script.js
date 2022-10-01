@@ -41,7 +41,13 @@ directionalLight.intensity = 0.3
 const hemiSphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff)
 hemiSphereLight.intensity = 0.5
 
-scene.add(ambientLight, pointLight, directionalLight, directionalLight.target, hemiSphereLight)
+// Area Light
+const areaLight = new THREE.RectAreaLight(0x0000ff,3, 1, 1)
+
+
+scene.add(ambientLight, pointLight, directionalLight, directionalLight.target, hemiSphereLight, areaLight)
+
+
 
 // Add lights to DEBUG GUI
 const AmbientLightFolder = gui.addFolder('Ambient Light')
@@ -69,6 +75,14 @@ hemiSphereLightFolder.add(hemiSphereLight, 'intensity',0 ,1, 0.1)
 hemiSphereLightFolder.addColor(hemiSphereLight, 'color').name('Sky Color')
 hemiSphereLightFolder.addColor(hemiSphereLight, 'groundColor').name('Ground Color')
 
+const areaLightFolder = gui.addFolder('Area Light')
+areaLightFolder.add(areaLight, 'intensity', 0, 5, 0.1)
+areaLightFolder.add(areaLight, 'height', 0, 3, 0.1)
+areaLightFolder.add(areaLight.position, 'x', -5, 5, 0.1)
+areaLightFolder.add(areaLight.position, 'y', -5, 5, 0.1)
+areaLightFolder.add(areaLight.position, 'z', -5, 5, 0.1)
+
+console.log(areaLight)
 const property ={
     thriller: thrillerLightingEffect,
     calmDown: calmDown
@@ -179,6 +193,9 @@ const tick = () =>
     cube.rotation.x = 0.15 * elapsedTime
     torus.rotation.x = 0.15 * elapsedTime
 
+    areaLight.lookAt(cube.position)
+
+
     // Update controls
     controls.update()
 
@@ -196,7 +213,9 @@ function thrillerLightingEffect(){
     ambientLight.intensity =0.01
     directionalLight.intensity=0.01
     hemiSphereLight.intensity=0.01
-
+    areaLight.intensity = 0.9
+    areaLight.height = 1
+    areaLight.position.set(-0.4,1.1,-1.5)
 }
 
 function calmDown(){
@@ -205,4 +224,8 @@ function calmDown(){
     ambientLight.intensity = 0.3
     directionalLight.intensity = 0.3
     hemiSphereLight.intensity = 0.5
+    areaLight.intensity = 3
+    areaLight.height = 1
+    areaLight.position.set(0,1,1)
+
 }

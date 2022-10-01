@@ -4,7 +4,7 @@
   "scripts": {
     "build": "webpack --config ./bundler/webpack.prod.js",
     "dev": "webpack serve --config ./bundler/webpack.dev.js",
-    "deploy": "vercel build --prod "
+    "deploy": "vercel deploy --prod "
   },
   "dependencies": {
     "@babel/core": "^7.17.10",
